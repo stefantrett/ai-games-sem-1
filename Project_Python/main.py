@@ -16,6 +16,7 @@ while not game_over:
         if args[1] == POSITION_SOUTH:
             agent.my_position = POSITION_SOUTH
             agent.opp_position = POSITION_NORTH
+            agent.make_move()
         elif args[1] == POSITION_NORTH:
             agent.my_position = POSITION_NORTH
             agent.opp_position = POSITION_SOUTH
@@ -28,6 +29,7 @@ while not game_over:
             agent.my_position, agent.opp_position = agent.opp_position, agent.my_position
         else:
             board.update(args[2])
-    agent.make_move()
+            if args[3] == 'YOU':
+                agent.make_move()
 
 
