@@ -8,7 +8,7 @@ class Board:
         self.south = [0, 7, 7, 7, 7, 7, 7, 7]
 
     def update(self, board_state):
-        positions = board_state.split(',')
+        positions = [int(x) for x in board_state.split(',')]
 
         self.north[0] = positions[7]
         self.north[1:8] = positions[:7]
@@ -21,5 +21,5 @@ class Board:
         reversed_north = self.north[1:]
         reversed_north.reverse()
 
-        log(str(self.north[0]) + " -- " + str(reversed_north) + '\n')
-        log(str(self.south[1:]) + " -- " + str(self.south[0]) + '\n\n')
+        log(str(self.north[0]) + " -- " + str(reversed_north))
+        log(str(self.south[1:]) + " -- " + str(self.south[0]) + '\n')

@@ -15,4 +15,5 @@ class Tortellini:
             return self.board.north[x] != 0
 
     def make_move(self):
-        print('MOVE;{}'.format(random.choice([x for x in range(1, 7) if self.not_empty(x)])))
+        choices = [x for x in range(1, 8) if self.not_empty(x)]
+        print('MOVE;{}'.format(random.choice(choices)))
