@@ -1,10 +1,10 @@
-from .tortellini import Tortellini
-from .board import Board
+from tortellini import Tortellini
+from board import Board
 
 POSITION_SOUTH = 'South'
 POSITION_NORTH = 'North'
 
-game_over = True
+game_over = False
 board = Board()
 agent = Tortellini(board)
 
@@ -28,5 +28,6 @@ while not game_over:
             agent.my_position, agent.opp_position = agent.opp_position, agent.my_position
         else:
             board.update()
+    agent.make_move()
 
 
