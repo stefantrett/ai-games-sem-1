@@ -27,6 +27,6 @@ while not game_over:
         if args[1] == 'SWAP':
             agent.my_position, agent.opp_position = agent.opp_position, agent.my_position
         else:
-            board.update()
+            board.update(args[2])
 
 
