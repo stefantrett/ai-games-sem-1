@@ -1,4 +1,4 @@
 .idea
 venv
 ./Project_Python/venv
-board_log.txt
+log.txt
