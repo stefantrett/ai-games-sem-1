@@ -49,6 +49,15 @@ class Board:
         elif side == POSITION_SOUTH:
             return self.state[15]
 
+    def get_evaluation(self):
+        return self.get_score_for_side(POSITION_NORTH) - self.get_score_for_side(POSITION_SOUTH)
+
+    def check_game_over(self, side):
+        if side == POSITION_NORTH:
+            return max(self.state[0:7]) == 0
+        else:
+            return max(self.state[8:15]) == 0
+
     def print_board(self):
         log("Board update")
 
