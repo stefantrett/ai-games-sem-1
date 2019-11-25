@@ -29,3 +29,13 @@ while not game_over:
             board.update(args[2])
             if args[3] == 'YOU':
                 agent.make_move()
+
+
+# ============ TESTING AREA ============
+def generate_board():
+    initial = Board()
+
+    for move in range(1, 8):
+        new_board = initial.generate_move(POSITION_SOUTH, move)
+        new_board.print_board()
+
