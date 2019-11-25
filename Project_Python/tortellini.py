@@ -9,6 +9,10 @@ class Tortellini:
         self.my_position = ''
         self.opp_position = ''
 
+    def random(self):
+        choices = [x for x in range(1, 8) if self.board.cell_not_empty(self.my_position, x)]
+        print('MOVE;{}'.format(random.choice(choices)))
+
     def make_move(self):
         scores = {}
 
