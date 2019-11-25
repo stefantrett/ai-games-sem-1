@@ -1,8 +1,6 @@
 from tortellini import Tortellini
 from board import Board
-
-POSITION_SOUTH = 'South'
-POSITION_NORTH = 'North'
+from util import *
 
 game_over = False
 board = Board()

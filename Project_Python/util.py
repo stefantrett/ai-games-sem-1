@@ -1,3 +1,6 @@
+POSITION_SOUTH = 'South'
+POSITION_NORTH = 'North'
+
 log_file = open("log.txt", "w")
 
 

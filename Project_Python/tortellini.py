@@ -1,4 +1,5 @@
 import random
+from util import *
 
 
 class Tortellini:
@@ -8,12 +9,6 @@ class Tortellini:
         self.my_position = ''
         self.opp_position = ''
 
-    def not_empty(self, x):
-        if self.my_position == 'South':
-            return self.board.south[x] != 0
-        else:
-            return self.board.north[x] != 0
-
     def make_move(self):
-        choices = [x for x in range(1, 8) if self.not_empty(x)]
+        choices = [x for x in range(1, 8) if self.board.cell_not_empty(self.my_position, x)]
         print('MOVE;{}'.format(random.choice(choices)))

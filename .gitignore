@@ -2,3 +2,5 @@
 venv
 ./Project_Python/venv
 log.txt
+*.pyc
+*__pycache__*
