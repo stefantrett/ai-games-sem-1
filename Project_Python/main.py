@@ -29,5 +29,3 @@ while not game_over:
             board.update(args[2])
             if args[3] == 'YOU':
                 agent.make_move()
-
-
