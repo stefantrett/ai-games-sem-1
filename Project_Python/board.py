@@ -34,9 +34,13 @@ class Board:
     def update(self, board_state):
         positions = [int(x) for x in board_state.split(',')]
         self.state = positions
+        self.print_board()
 
-        # TODO: delete
-        # self.print_board()
+    def get_score_for_side(self, side):
+        if side == POSITION_NORTH:
+            return self.state[7]
+        elif side == POSITION_SOUTH:
+            return self.state[15]
 
     def print_board(self):
         log("Board update")
