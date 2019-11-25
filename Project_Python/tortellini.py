@@ -1,5 +1,6 @@
 import math
 import random
+from copy import deepcopy
 from heapq import heappop, heappush
 
 from util import *
@@ -13,7 +14,7 @@ class Tortellini:
         self.opp_position = ''
 
     def make_move(self):
-        self.min_max_alg()
+        print('MOVE;{}'.format(self.min_max_alg(deepcopy(self.board), 7, False, POSITION_SOUTH, 0)[1]))
 
     def random(self):
         choices = [x for x in range(1, 8) if self.board.cell_not_empty(self.my_position, x)]
@@ -33,9 +34,9 @@ class Tortellini:
         log('MOVE;{}'.format(score))
         print('MOVE;{}'.format(score))
 
-    def min_max_alg(self, board, depth, maximizing_player, side):
+    def min_max_alg(self, board, depth, maximizing_player, side, index):
         if depth == 0 or board.check_game_over(side):
-            return board.get_evaluation(), 0
+            return board.get_evaluation(), index
 
         if maximizing_player:
             max_evaluation = -math.inf
@@ -43,7 +44,7 @@ class Tortellini:
             for i in range(1, 8):
                 if self.board.cell_not_empty(side, i):
                     child = self.board.generate_move(side, i)
-                    evaluation, last_move = self.min_max_alg(child, depth - 1, False, opposite_side(side))
+                    evaluation, last_move = self.min_max_alg(child, depth - 1, False, opposite_side(side), i)
                     if max_evaluation < evaluation:
                         max_i = i
                         max_evaluation = evaluation
@@ -52,11 +53,13 @@ class Tortellini:
 
         else:
             min_evaluation = math.inf
-
+            min_i = 0
             for i in range(1, 8):
                 if self.board.cell_not_empty(side, i):
                     child = self.board.generate_move(side, i)
-                    evaluation = self.min_max_alg(child, depth - 1, True, opposite_side(side))
-                    min_evaluation = min(min_evaluation, evaluation)
+                    evaluation, _ = self.min_max_alg(child, depth - 1, True, opposite_side(side), i)
+                    if min_evaluation > evaluation:
+                        min_i = i
+                        min_evaluation = evaluation
 
-            return min_evaluation
+            return min_evaluation, min_i
