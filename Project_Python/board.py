@@ -35,7 +35,7 @@ class Board:
         # self.south = [0, 7, 7, 7, 7, 7, 7, 7] home south – holes south
 
         # this is how it's kept in memory
-        self.state = [7, 7, 7, 7, 7, 7, 7, 0, 7, 7, 7, 7, 7, 7, 15, 0]
+        self.state = [7, 7, 7, 7, 7, 7, 7, 0, 7, 7, 7, 7, 7, 7, 7, 0]
         # holes north - home north - holes south - home south
 
     def update(self, board_state):
