@@ -17,7 +17,7 @@ class Tortellini:
     def make_move(self):
         print('MOVE;{}'.format(self.min_max_alg(deepcopy(self.board), 3, False, SOUTH_SIDE, 0)[1]))
 
-    def random(self):
+    def random_alg(self):
         choices = [x for x in range(1, 8) if self.board.cell_not_empty(self.my_position, x)]
         print('MOVE;{}'.format(random.choice(choices)))
 

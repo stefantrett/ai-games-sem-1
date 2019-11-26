@@ -5,13 +5,16 @@ from util import *
 NORTH_HOME = 7
 SOUTH_HOME = 15
 
-
-def opponent_well(my_side):
-    return SOUTH_HOME if my_side == NORTH_SIDE else NORTH_HOME
+# my_side == NORTH_SIDE (= 0) -> 1 - my_side * result (if you want result for NORTH)
+# my_side == SOUTH_HOME (= 1) -> my_side * result (if you want result for SOUTH)
 
 
 def my_well(my_side):
-    return NORTH_HOME if my_side == NORTH_SIDE else SOUTH_HOME
+    return (1 - my_side) * NORTH_HOME + my_side * SOUTH_HOME
+
+
+def opponent_well(my_side):
+    return my_side * NORTH_HOME + (1 - my_side) * SOUTH_HOME
 
 
 def owned_hole(my_side, hole_index):
@@ -20,7 +23,7 @@ def owned_hole(my_side, hole_index):
 
 def get_index(side, move):
     if 1 <= move <= 7:
-        return move - 1 if side == NORTH_SIDE else move + 7
+        return (1 - side) * (move - 1) + side * (move + 7)
     else:
         log("Cannot get index out of (side, move) combination")
 
