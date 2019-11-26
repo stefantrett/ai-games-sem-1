@@ -1,5 +1,8 @@
-POSITION_SOUTH = 'South'
-POSITION_NORTH = 'North'
+NORTH = 'North'
+SOUTH = 'South'
+
+NORTH_SIDE = 0
+SOUTH_SIDE = 1
 
 DEPTH = 10
 
@@ -10,8 +13,5 @@ def log(some_string):
     log_file.write(str(some_string) + '\n')
 
 
-def opposite_side(side):
-    if side == POSITION_SOUTH:
-        return POSITION_NORTH
-    else:
-        return POSITION_SOUTH
+def opposite_side(my_side):
+    return 1 - my_side

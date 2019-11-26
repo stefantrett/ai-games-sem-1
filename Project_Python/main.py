@@ -11,13 +11,13 @@ while not game_over:
     args = command.split(';')
 
     if args[0] == 'START':
-        if args[1] == POSITION_SOUTH:
-            agent.my_position = POSITION_SOUTH
-            agent.opp_position = POSITION_NORTH
+        if args[1] == SOUTH:
+            agent.my_position, agent.opp_position = SOUTH_SIDE, NORTH_SIDE
             agent.make_move()
-        elif args[1] == POSITION_NORTH:
-            agent.my_position = POSITION_NORTH
-            agent.opp_position = POSITION_SOUTH
+        elif args[1] == NORTH:
+            agent.my_position, agent.opp_position = NORTH_SIDE, SOUTH_SIDE
+        else:
+            log("Command not valid")
 
     elif args[0] == 'END':
         game_over = True
@@ -36,6 +36,6 @@ def generate_board():
     initial = Board()
 
     for move in range(1, 8):
-        new_board = initial.generate_move(POSITION_SOUTH, move)
+        new_board = initial.generate_move(SOUTH_SIDE, move)
         new_board.print_board()
 
