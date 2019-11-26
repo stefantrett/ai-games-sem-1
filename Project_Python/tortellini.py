@@ -29,7 +29,7 @@ class Tortellini:
             if self.board.cell_not_empty(self.my_position, i):
                 move_result_board = self.board.generate_move(self.my_position, i)
 
-                heappush(scores, (-1 * move_result_board.get_score_for_side(self.my_position), i))
+                heappush(scores, (-1 * move_result_board.get_well_score(self.my_position), i))
         score = heappop(scores)[1]
 
         log('MOVE;{}'.format(score))

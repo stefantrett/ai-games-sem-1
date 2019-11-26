@@ -45,7 +45,7 @@ class Board:
     # side = the side that made the move
     def generate_move(self, side, move):
         new_board = deepcopy(self)
-        count = self.get_number_in_cell(side, move)
+        count = self.get_cell_score(side, move)
         index = get_index(side, move)
         new_board.state[index] = 0
 
@@ -62,24 +62,24 @@ class Board:
             if owned_hole(side, index):  # hole I ended up on is owned by me
                 # take all pebbles on opposite side
                 new_board.state[14 - index] = 0
-                new_board.increment_home(side, new_board.state[14 - index])
+                new_board.increment_well(side, new_board.state[14 - index])
 
         return new_board
 
     def get_evaluation(self):
-        return self.get_score_for_side(NORTH_SIDE) - self.get_score_for_side(SOUTH_SIDE)
+        return self.get_well_score(NORTH_SIDE) - self.get_well_score(SOUTH_SIDE)
 
-    def get_score_for_side(self, side):
+    def get_well_score(self, side):
         return self.state[my_well(side)]
 
-    def increment_home(self, side, pebbles_no):
+    def increment_well(self, side, pebbles_no):
         self.state[my_well(side)] += pebbles_no
 
-    def get_number_in_cell(self, side, cell):
+    def get_cell_score(self, side, cell):
         return self.state[get_index(side, cell)]
 
     def cell_not_empty(self, side, cell):
-        return self.get_number_in_cell(side, cell) != 0
+        return self.get_cell_score(side, cell) != 0
 
     def no_moves_left(self, side):
         return max(self.state[0:7]) == 0 if side == NORTH_SIDE else max(self.state[8:15]) == 0
