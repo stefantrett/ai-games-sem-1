@@ -10,13 +10,14 @@ class Tortellini:
 
     def __init__(self, board):
         self.board = board
-        self.my_position = ''
-        self.opp_position = ''
+        self.my_position = SOUTH_SIDE
+        self.opp_position = NORTH_SIDE
 
+    # TODO: why not use self.my_position instead of SOUTH_SIDE?
     def make_move(self):
-        print('MOVE;{}'.format(self.min_max_alg(deepcopy(self.board), DEPTH, False, POSITION_SOUTH, 0)[1]))
+        print('MOVE;{}'.format(self.min_max_alg(deepcopy(self.board), DEPTH, False, SOUTH_SIDE, 0)[1]))
 
-    def random(self):
+    def random_alg(self):
         choices = [x for x in range(1, 8) if self.board.cell_not_empty(self.my_position, x)]
         print('MOVE;{}'.format(random.choice(choices)))
 
@@ -28,14 +29,14 @@ class Tortellini:
             if self.board.cell_not_empty(self.my_position, i):
                 move_result_board = self.board.generate_move(self.my_position, i)
 
-                heappush(scores, (-1 * move_result_board.get_score_for_side(self.my_position), i))
+                heappush(scores, (-1 * move_result_board.get_well_score(self.my_position), i))
         score = heappop(scores)[1]
 
         log('MOVE;{}'.format(score))
         print('MOVE;{}'.format(score))
 
     def min_max_alg(self, board, depth, maximizing_player, side, index):
-        if depth == 0 or board.check_game_over(side):
+        if depth == 0 or board.no_moves_left(side):
             return board.get_evaluation(), index
 
         if maximizing_player:
