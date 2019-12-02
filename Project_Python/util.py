@@ -4,7 +4,7 @@ SOUTH = 'South'
 NORTH_SIDE = 0
 SOUTH_SIDE = 1
 
-DEPTH = 10
+DEPTH = 4
 
 log_file = open("log.txt", "w")
 

@@ -15,7 +15,7 @@ class Tortellini:
 
     # TODO: why not use self.my_position instead of SOUTH_SIDE?
     def make_move(self):
-        print('MOVE;{}'.format(self.min_max_alg(deepcopy(self.board), 3, False, SOUTH_SIDE, 0)[1]))
+        print('MOVE;{}'.format(self.min_max_alg(deepcopy(self.board), DEPTH, False, SOUTH_SIDE, 0)[1]))
 
     def random_alg(self):
         choices = [x for x in range(1, 8) if self.board.cell_not_empty(self.my_position, x)]
