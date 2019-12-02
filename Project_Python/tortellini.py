@@ -44,10 +44,10 @@ class Tortellini:
             max_i = 0
             for i in range(1, 8):
                 if self.board.cell_not_empty(side, i):
-                    child, ended_in_opposite_side = self.board.generate_move(side, i)
+                    child, ended_in_own_well = self.board.generate_move(side, i)
 
-                    # One more turn if it ended in the opposite side
-                    if ended_in_opposite_side:
+                    # One more turn if it ended in it's own well
+                    if ended_in_own_well:
                         evaluation, _ = self.min_max_alg(child, depth - 1, True, side, i)
                     else:
                         evaluation, _ = self.min_max_alg(child, depth - 1, False, opposite_side(side), i)
@@ -63,10 +63,10 @@ class Tortellini:
             min_i = 0
             for i in range(1, 8):
                 if self.board.cell_not_empty(side, i):
-                    child, ended_in_opposite_side = self.board.generate_move(side, i)
+                    child, ended_in_own_well = self.board.generate_move(side, i)
 
-                    # One more turn if it ended in the opposite side
-                    if ended_in_opposite_side:
+                    # One more turn if it ended in it's own well
+                    if ended_in_own_well:
                         evaluation, _ = self.min_max_alg(child, depth - 1, False, side, i)
                     else:
                         evaluation, _ = self.min_max_alg(child, depth - 1, True, opposite_side(side), i)

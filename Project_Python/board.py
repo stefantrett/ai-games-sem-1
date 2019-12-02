@@ -51,15 +51,13 @@ class Board:
         count = self.get_cell_score(side, move)
         index = get_index(side, move)
         new_board.state[index] = 0
-        ended_in_opposite_side = False
+        ended_in_own_well = False
 
         # update all cells
         while count != 0:
-            ended_in_opposite_side = False
             index = 0 if index == 15 else index + 1  # cycle around
 
             if index != opponent_well(side):  # if it isn't opponent's well
-                ended_in_opposite_side = True
                 new_board.state[index] += 1
                 count -= 1
 
@@ -70,7 +68,10 @@ class Board:
                 new_board.increment_well(side, new_board.state[14 - index])
                 new_board.state[14 - index] = 0
 
-        return new_board, ended_in_opposite_side
+        if index == my_well(index):
+            ended_in_own_well = True
+
+        return new_board, ended_in_own_well
 
     def get_evaluation(self):
         return self.get_well_score(NORTH_SIDE) - self.get_well_score(SOUTH_SIDE)
