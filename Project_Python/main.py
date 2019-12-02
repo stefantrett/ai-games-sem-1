@@ -36,6 +36,7 @@ while not game_over:
                     is_SWAP_an_option = False
                     # decide if we should swap or not
                     if board == board_we_would_get_to:
+                        agent.my_position, agent.opp_position = agent.opp_position, agent.my_position
                         print('SWAP')
                     else:
                         print('MOVE;{}'.format(agent.make_move(agent.my_position)))

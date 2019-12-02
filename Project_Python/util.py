@@ -9,8 +9,8 @@ DEPTH = 4
 log_file = open("log.txt", "w")
 
 
-def log(some_string):
-    log_file.write(str(some_string) + '\n')
+def log(some_object):
+    log_file.write(str(some_object) + '\n')
 
 
 def opposite_side(my_side):
