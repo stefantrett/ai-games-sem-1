@@ -39,6 +39,12 @@ class Board:
         self.state = [7, 7, 7, 7, 7, 7, 7, 0, 7, 7, 7, 7, 7, 7, 7, 0]
         # holes north - home north - holes south - home south
 
+    def __eq__(self, other):
+        # Overrides the default implementation
+        if isinstance(other, Board):
+            return self.state == other.state
+        return False
+
     def update(self, board_state):
         positions = [int(x) for x in board_state.split(',')]
         self.state = positions

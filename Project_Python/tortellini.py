@@ -3,6 +3,7 @@ import random
 from copy import deepcopy
 from heapq import heappop, heappush
 
+from board import Board
 from util import *
 
 
@@ -14,8 +15,21 @@ class Tortellini:
         self.opp_position = NORTH_SIDE
 
     # TODO: why not use self.my_position instead of SOUTH_SIDE?
-    def make_move(self):
-        print('MOVE;{}'.format(self.min_max_alg(deepcopy(self.board), DEPTH, False, SOUTH_SIDE, 0)[1]))
+    def make_move(self, side):
+        if side == SOUTH_SIDE:
+            return self.min_max_alg(deepcopy(self.board), DEPTH, False, SOUTH_SIDE, 0)[1]
+        else:
+            return self.min_max_alg(deepcopy(self.board), DEPTH, True, NORTH_SIDE, 0)[1]
+
+    def simulate_move_for_side(self, side):
+
+        if side == SOUTH_SIDE:
+            move = self.min_max_alg(Board(), DEPTH, False, SOUTH_SIDE, 0)[1]
+        else:
+            move = self.min_max_alg(Board(), DEPTH, True, NORTH_SIDE, 0)[1]
+
+        new_board_state, _ = Board().generate_move(side, move)
+        return new_board_state
 
     def random_alg(self):
         choices = [x for x in range(1, 8) if self.board.cell_not_empty(self.my_position, x)]
