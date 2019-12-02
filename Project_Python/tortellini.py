@@ -27,7 +27,7 @@ class Tortellini:
         # Max algorithm - simulate every next possible move and do the one that gives us most pebbles
         for i in range(1, 8):
             if self.board.cell_not_empty(self.my_position, i):
-                move_result_board = self.board.generate_move(self.my_position, i)
+                move_result_board, _ = self.board.generate_move(self.my_position, i)
 
                 heappush(scores, (-1 * move_result_board.get_well_score(self.my_position), i))
         score = heappop(scores)[1]
@@ -44,8 +44,14 @@ class Tortellini:
             max_i = 0
             for i in range(1, 8):
                 if self.board.cell_not_empty(side, i):
-                    child = self.board.generate_move(side, i)
-                    evaluation, last_move = self.min_max_alg(child, depth - 1, False, opposite_side(side), i)
+                    child, ended_in_own_well = self.board.generate_move(side, i)
+
+                    # One more turn if it ended in it's own well
+                    if ended_in_own_well:
+                        evaluation, _ = self.min_max_alg(child, depth - 1, True, side, i)
+                    else:
+                        evaluation, _ = self.min_max_alg(child, depth - 1, False, opposite_side(side), i)
+
                     if max_evaluation < evaluation:
                         max_i = i
                         max_evaluation = evaluation
@@ -57,8 +63,14 @@ class Tortellini:
             min_i = 0
             for i in range(1, 8):
                 if self.board.cell_not_empty(side, i):
-                    child = self.board.generate_move(side, i)
-                    evaluation, _ = self.min_max_alg(child, depth - 1, True, opposite_side(side), i)
+                    child, ended_in_own_well = self.board.generate_move(side, i)
+
+                    # One more turn if it ended in it's own well
+                    if ended_in_own_well:
+                        evaluation, _ = self.min_max_alg(child, depth - 1, False, side, i)
+                    else:
+                        evaluation, _ = self.min_max_alg(child, depth - 1, True, opposite_side(side), i)
+
                     if min_evaluation > evaluation:
                         min_i = i
                         min_evaluation = evaluation
