@@ -36,6 +36,6 @@ def generate_board():
     initial = Board()
 
     for move in range(1, 8):
-        new_board = initial.generate_move(SOUTH_SIDE, move)
+        new_board, _ = initial.generate_move(SOUTH_SIDE, move)
         new_board.print_board()
 
