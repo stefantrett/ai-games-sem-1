@@ -6,6 +6,8 @@ game_over = False
 board = Board()
 agent = Tortellini(board)
 is_SWAP_an_option = False
+# variable to keep the bord state of how we would move if we were the opponent
+# (only used in first turn to decide if we swap)
 board_we_would_get_to = None
 
 while not game_over:
@@ -15,7 +17,8 @@ while not game_over:
     if args[0] == 'START':
         if args[1] == SOUTH:
             agent.my_position, agent.opp_position = SOUTH_SIDE, NORTH_SIDE
-            print('MOVE;{}'.format(agent.make_move(agent.my_position)))
+            move = agent.make_move(agent.my_position)
+            print('MOVE;{}'.format(move))
         elif args[1] == NORTH:
             agent.my_position, agent.opp_position = NORTH_SIDE, SOUTH_SIDE
             is_SWAP_an_option = True
@@ -39,9 +42,11 @@ while not game_over:
                         agent.my_position, agent.opp_position = agent.opp_position, agent.my_position
                         print('SWAP')
                     else:
-                        print('MOVE;{}'.format(agent.make_move(agent.my_position)))
+                        move = agent.make_move(agent.my_position)
+                        print('MOVE;{}'.format(move))
                 else:
-                    print('MOVE;{}'.format(agent.make_move(agent.my_position)))
+                    move = agent.make_move(agent.my_position)
+                    print('MOVE;{}'.format(move))
 
 
 # ============ TESTING AREA ============
@@ -51,4 +56,3 @@ def generate_board():
     for move in range(1, 8):
         new_board, _ = initial.generate_move(SOUTH_SIDE, move)
         new_board.print_board()
-
