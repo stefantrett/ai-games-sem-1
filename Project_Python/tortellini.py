@@ -20,7 +20,7 @@ class Tortellini:
         else:
             maximizing = False
 
-        return self.min_max_alg(deepcopy(self.board), DEPTH, maximizing, side, 0)[1]
+        return self.min_max_alg(deepcopy(self.board), DEPTH, -math.inf, math.inf, maximizing, side)[1]
 
     def simulate_move_for_side(self, side):
         if side == NORTH_SIDE:
@@ -28,7 +28,7 @@ class Tortellini:
         else:
             maximizing = False
 
-        move = self.min_max_alg(Board(), DEPTH, maximizing, side, 0)[1]
+        move = self.min_max_alg(Board(), DEPTH, -math.inf, math.inf, maximizing, side)[1]
         new_board_state, _ = Board().generate_move(side, move)
         return new_board_state
 
@@ -50,10 +50,18 @@ class Tortellini:
         log('MOVE;{}'.format(score))
         print('MOVE;{}'.format(score))
 
-    def min_max_alg(self, board, depth, maximizing_player, side, index):
-        if depth == 0 or board.no_moves_left(side):
-            return board.get_evaluation(), index
+    def min_max_alg(self, board, depth, alpha, beta, maximizing_player, side):
+        # reached maximum depth - heuristics - now random
+        if depth == 0:
+            choices = [x for x in range(1, 8) if board.cell_not_empty(side, x)]
+            return board.get_evaluation(), random.choice(choices)
 
+        # base case - only one move left
+        last_move, last_move_index = board.one_move_left(side)
+        if last_move:
+            return board.get_evaluation(), board.last_move_index
+
+        # apply min max
         if maximizing_player:
             max_evaluation = -math.inf
             max_i = 0
@@ -63,13 +71,18 @@ class Tortellini:
 
                     # One more turn if it ended in it's own well
                     if ended_in_own_well:
-                        evaluation, _ = self.min_max_alg(child, depth - 1, True, side, i)
+                        evaluation, _ = self.min_max_alg(child, depth - 1, alpha, beta, True, side)
                     else:
-                        evaluation, _ = self.min_max_alg(child, depth - 1, False, opposite_side(side), i)
+                        evaluation, _ = self.min_max_alg(child, depth - 1, alpha, beta, False, opposite_side(side))
 
                     if max_evaluation < evaluation:
                         max_i = i
                         max_evaluation = evaluation
+
+                    alpha = max(alpha, evaluation)
+
+                if beta <= alpha:  # not sure about indentation of this
+                    break
 
             return max_evaluation, max_i
 
@@ -82,12 +95,17 @@ class Tortellini:
 
                     # One more turn if it ended in it's own well
                     if ended_in_own_well:
-                        evaluation, _ = self.min_max_alg(child, depth - 1, False, side, i)
+                        evaluation, _ = self.min_max_alg(child, depth - 1, alpha, beta, False, side)
                     else:
-                        evaluation, _ = self.min_max_alg(child, depth - 1, True, opposite_side(side), i)
+                        evaluation, _ = self.min_max_alg(child, depth - 1, alpha, beta, True, opposite_side(side))
 
                     if min_evaluation > evaluation:
                         min_i = i
                         min_evaluation = evaluation
+
+                    beta = min(beta, evaluation)
+
+                if beta <= alpha:  # not sure about indentation of this
+                    break
 
             return min_evaluation, min_i
