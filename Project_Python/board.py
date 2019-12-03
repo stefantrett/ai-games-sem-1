@@ -1,6 +1,6 @@
 from copy import deepcopy
-
 from util import *
+import numpy as np
 
 NORTH_HOME = 7
 SOUTH_HOME = 15
@@ -94,8 +94,21 @@ class Board:
     def cell_not_empty(self, side, cell):
         return self.get_cell_score(side, cell) != 0
 
-    def no_moves_left(self, side):
-        return max(self.state[0:7]) == 0 if side == NORTH_SIDE else max(self.state[8:15]) == 0
+    def one_move_left(self, side):
+        holes = self.state[0:7] if side == NORTH_SIDE else self.state[8:15]
+
+        count = 0
+        index = 0
+
+        for i in range(0, len(holes)):
+            if holes[i] != 0:
+                count += 1
+                index = i + 1
+
+        if count == 1:
+            return True, index
+        else:
+            return False, -1
 
     def print_board(self):
         log("Board update")
