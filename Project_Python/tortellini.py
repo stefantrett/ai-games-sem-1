@@ -20,7 +20,7 @@ class Tortellini:
         else:
             maximizing = False
 
-        return self.min_max_alg(deepcopy(self.board), DEPTH, maximizing, side, 0)[1]
+        return self.min_max_alg(deepcopy(self.board), DEPTH, maximizing, side)[1]
 
     def simulate_move_for_side(self, side):
         if side == NORTH_SIDE:
@@ -28,7 +28,7 @@ class Tortellini:
         else:
             maximizing = False
 
-        move = self.min_max_alg(Board(), DEPTH, maximizing, side, 0)[1]
+        move = self.min_max_alg(Board(), DEPTH, maximizing, side)[1]
         new_board_state, _ = Board().generate_move(side, move)
         return new_board_state
 
@@ -50,7 +50,7 @@ class Tortellini:
         log('MOVE;{}'.format(score))
         print('MOVE;{}'.format(score))
 
-    def min_max_alg(self, board, depth, maximizing_player, side, index):
+    def min_max_alg(self, board, depth, maximizing_player, side):
         # reached maximum depth - heuristics - now random
         if depth == 0:
             choices = [x for x in range(1, 8) if board.cell_not_empty(side, x)]
@@ -71,9 +71,9 @@ class Tortellini:
 
                     # One more turn if it ended in it's own well
                     if ended_in_own_well:
-                        evaluation, _ = self.min_max_alg(child, depth - 1, True, side, i)
+                        evaluation, _ = self.min_max_alg(child, depth - 1, True, side)
                     else:
-                        evaluation, _ = self.min_max_alg(child, depth - 1, False, opposite_side(side), i)
+                        evaluation, _ = self.min_max_alg(child, depth - 1, False, opposite_side(side))
 
                     if max_evaluation < evaluation:
                         max_i = i
@@ -90,9 +90,9 @@ class Tortellini:
 
                     # One more turn if it ended in it's own well
                     if ended_in_own_well:
-                        evaluation, _ = self.min_max_alg(child, depth - 1, False, side, i)
+                        evaluation, _ = self.min_max_alg(child, depth - 1, False, side)
                     else:
-                        evaluation, _ = self.min_max_alg(child, depth - 1, True, opposite_side(side), i)
+                        evaluation, _ = self.min_max_alg(child, depth - 1, True, opposite_side(side))
 
                     if min_evaluation > evaluation:
                         min_i = i
