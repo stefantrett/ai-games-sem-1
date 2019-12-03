@@ -51,9 +51,17 @@ class Tortellini:
         print('MOVE;{}'.format(score))
 
     def min_max_alg(self, board, depth, maximizing_player, side, index):
-        if depth == 0 or board.no_moves_left(side):
-            return board.get_evaluation(), index
+        # reached maximum depth - heuristics - now random
+        if depth == 0:
+            choices = [x for x in range(1, 8) if board.cell_not_empty(side, x)]
+            return board.get_evaluation(), random.choice(choices)
 
+        # base case - only one move left
+        last_move, last_move_index = board.one_move_left(side)
+        if last_move:
+            return board.get_evaluation(), board.last_move_index
+
+        # apply min max
         if maximizing_player:
             max_evaluation = -math.inf
             max_i = 0
