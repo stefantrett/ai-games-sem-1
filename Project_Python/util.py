@@ -4,11 +4,11 @@ SOUTH = 'South'
 NORTH_SIDE = 0
 SOUTH_SIDE = 1
 
-DEPTH = 6
+DEPTH = 16
 
 log_file = open("log.txt", "w")
 
-evaluation_hyperparameter = 4
+evaluation_hyperparameter = 2.0
 
 
 def log(some_object):

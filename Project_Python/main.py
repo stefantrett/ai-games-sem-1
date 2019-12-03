@@ -40,12 +40,15 @@ while not game_over:
                     # decide if we should swap or not
                     if board == board_we_would_get_to:
                         agent.my_position, agent.opp_position = agent.opp_position, agent.my_position
+                        log('SWAP')
                         print('SWAP')
                     else:
                         move = agent.make_move(agent.my_position)
+                        log('MOVE;{}'.format(move))
                         print('MOVE;{}'.format(move))
                 else:
                     move = agent.make_move(agent.my_position)
+                    log('MOVE;{}'.format(move))
                     print('MOVE;{}'.format(move))
 
 

@@ -82,8 +82,8 @@ class Board:
 
     def get_evaluation(self):
         pits_score_north, pits_score_south = self.get_pits_score_for_sides()
-        return self.get_well_score(NORTH_SIDE) - self.get_well_score(SOUTH_SIDE) + (
-                    pits_score_north - pits_score_south) * evaluation_hyperparameter
+        return (self.get_well_score(NORTH_SIDE) - self.get_well_score(SOUTH_SIDE)) * evaluation_hyperparameter + (
+                pits_score_north - pits_score_south)
 
     def get_well_score(self, side):
         return self.state[my_well(side)]
