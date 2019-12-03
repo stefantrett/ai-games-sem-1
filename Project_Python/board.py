@@ -5,6 +5,7 @@ from util import *
 NORTH_HOME = 7
 SOUTH_HOME = 15
 
+
 # my_side == NORTH_SIDE (= 0) -> 1 - my_side * result (if you want result for NORTH)
 # my_side == SOUTH_HOME (= 1) -> my_side * result (if you want result for SOUTH)
 
@@ -80,10 +81,15 @@ class Board:
         return new_board, ended_in_own_well
 
     def get_evaluation(self):
-        return self.get_well_score(NORTH_SIDE) - self.get_well_score(SOUTH_SIDE)
+        pits_score_north, pits_score_south = self.get_pits_score_for_sides()
+        return self.get_well_score(NORTH_SIDE) - self.get_well_score(SOUTH_SIDE) + (
+                    pits_score_north - pits_score_south) * evaluation_hyperparameter
 
     def get_well_score(self, side):
         return self.state[my_well(side)]
+
+    def get_pits_score_for_sides(self):
+        return sum(self.state[0:7]), sum(self.state[8:15])
 
     def increment_well(self, side, pebbles_no):
         self.state[my_well(side)] += pebbles_no
@@ -107,4 +113,3 @@ class Board:
 
         # South side
         log(str(self.state[8:15]) + " -- " + str(self.state[SOUTH_HOME]))
-
