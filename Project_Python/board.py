@@ -1,6 +1,6 @@
 from copy import deepcopy
+
 from util import *
-import numpy as np
 
 NORTH_HOME = 7
 SOUTH_HOME = 15
