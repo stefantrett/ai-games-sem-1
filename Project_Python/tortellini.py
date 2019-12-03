@@ -56,10 +56,9 @@ class Tortellini:
             choices = [x for x in range(1, 8) if board.cell_not_empty(side, x)]
             return board.get_evaluation(), random.choice(choices)
 
-        # base case - only one move left
-        last_move, last_move_index = board.one_move_left(side)
-        if last_move:
-            return board.get_evaluation(), board.last_move_index
+        # base case - no moves left
+        if board.no_moves_left(side):
+            return board.get_evaluation(), 0
 
         # apply min max
         if maximizing_player:
