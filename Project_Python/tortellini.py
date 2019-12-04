@@ -7,6 +7,25 @@ from board import Board
 from util import *
 
 
+def get_ordered_child_list(simulation_board, side):
+    children_ranks = {}
+    for i in range(1, 8):
+        cell_score = simulation_board.get_cell_score(side, i)
+        if cell_score + i <= 7:
+            children_ranks[i] = 0
+        elif cell_score + i == 8:
+            children_ranks[i] = 1
+        elif cell_score % 15 + i <= 7:
+            children_ranks[i] = (cell_score + i) / 15
+        else:
+            children_ranks[i] = 3
+    l = [k for k in sorted(children_ranks, key=children_ranks.get, reverse=True)]
+    log(children_ranks)
+    log(l)
+    log('------------------')
+    return l
+
+
 class Tortellini:
 
     def __init__(self, board):
@@ -64,7 +83,7 @@ class Tortellini:
         if maximizing_player:
             max_evaluation = -math.inf
             max_i = 0
-            for i in range(7, 0, -1):
+            for i in get_ordered_child_list(simulation_board, side):
                 if simulation_board.cell_not_empty(side, i):
                     child, ended_in_own_well = simulation_board.generate_move(side, i)
 
@@ -88,7 +107,7 @@ class Tortellini:
         else:
             min_evaluation = math.inf
             min_i = 0
-            for i in range(7, 0, -1):
+            for i in get_ordered_child_list(simulation_board, side):
                 if simulation_board.cell_not_empty(side, i):
                     child, ended_in_own_well = simulation_board.generate_move(side, i)
 
