@@ -64,7 +64,7 @@ class Tortellini:
         if maximizing_player:
             max_evaluation = -math.inf
             max_i = 0
-            for i in range(1, 8):
+            for i in range(7, 0, -1):
                 if simulation_board.cell_not_empty(side, i):
                     child, ended_in_own_well = simulation_board.generate_move(side, i)
 
@@ -88,7 +88,7 @@ class Tortellini:
         else:
             min_evaluation = math.inf
             min_i = 0
-            for i in range(1, 8):
+            for i in range(7, 0, -1):
                 if simulation_board.cell_not_empty(side, i):
                     child, ended_in_own_well = simulation_board.generate_move(side, i)
 
