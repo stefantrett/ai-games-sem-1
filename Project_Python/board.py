@@ -74,7 +74,7 @@ class Board:
                 new_board.increment_well(side, new_board.state[14 - index])
                 new_board.state[14 - index] = 0
 
-        if index == my_well(index):
+        if index == my_well(side):
             ended_in_own_well = True
 
         return new_board, ended_in_own_well
