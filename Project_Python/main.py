@@ -55,12 +55,3 @@ try:
 except Exception as e:
     log(traceback.extract_tb(e.__traceback__))
     log(e)
-
-
-# ============ TESTING AREA ============
-def generate_board():
-    initial = Board()
-
-    for move in range(1, 8):
-        new_board, _ = initial.generate_move(SOUTH_SIDE, move)
-        new_board.print_board()

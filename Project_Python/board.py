@@ -91,6 +91,7 @@ class Board:
     # TODO: pass maximizing instead of side
     def get_evaluation(self, side):
         # Heuristic 1
+        left_most_pit_score = self.state[0] - self.state[8]
 
         # Heuristic 2
         pits_score = sum(self.state[0:7]) - sum(self.state[8:15])
@@ -109,7 +110,8 @@ class Board:
         else:
             right_most_position = 0
 
-        return (pits_score * pits_score_weight) + (
+        return (left_most_pit_score * left_most_pit_score_weight) + (
+                pits_score * pits_score_weight) + (
                 number_of_possible_moves * number_of_possible_moves_weight) + (
                 well_points * well_points_weight) + (
                 right_most_position * right_most_position_weight)
