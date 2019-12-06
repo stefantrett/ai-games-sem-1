@@ -92,36 +92,26 @@ class Board:
         # Heuristic 1
 
         # Heuristic 2
-        if side == NORTH_SIDE:
-            pits_score = sum(self.state[0:7])
-        else:
-            pits_score = (-1) * sum(self.state[8:15])
+        pits_score = sum(self.state[0:7]) - sum(self.state[8:15])
 
         # Heuristic 3
-        if side == NORTH_SIDE:
-            number_of_possible_moves = sum(cell > 0 for cell in self.state[0:7])
-        else:
-            number_of_possible_moves = (-1) * sum(cell > 0 for cell in self.state[8:15])
+        number_of_possible_moves = sum(cell > 0 for cell in self.state[0:7]) - sum(cell > 0 for cell in self.state[8:15])
 
         # Heuristic 4
-        maximizing_well_points = self.get_well_score(NORTH_SIDE)
+        well_points = self.get_well_score(NORTH_SIDE) - self.get_well_score(SOUTH_SIDE)
 
         # Heuristic 5
-        if side == NORTH_SIDE and self.last_position_moved == 1:
+        if side == NORTH_SIDE and self.last_position_moved == 7:
             right_most_position = 1
-        elif side == SOUTH_SIDE and self.last_position_moved == 1:
+        elif side == SOUTH_SIDE and self.last_position_moved == 7:
             right_most_position = -1
         else:
             right_most_position = 0
 
-        # Heuristic 6
-        minimizing_well_points = self.get_well_score(SOUTH_SIDE)
-        
         return (pits_score * pits_score_weight) + (
                 number_of_possible_moves * number_of_possible_moves_weight) + (
-                maximizing_well_points * maximizing_well_points_weight) + (
-                right_most_position * right_most_position_weight) - (
-                minimizing_well_points * minimizing_well_points_weight)
+                well_points * well_points_weight) + (
+                right_most_position * right_most_position_weight)
 
     def get_pits_score_for_sides(self):
         return sum(self.state[0:7]), sum(self.state[8:15])

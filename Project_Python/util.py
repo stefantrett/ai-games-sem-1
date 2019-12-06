@@ -9,15 +9,15 @@ DEPTH = 7
 log_file = open("log.txt", "w")
 
 # Heuristic 2 Weight
-pits_score_weight = 0.380168
+pits_score_weight = 1.0
 # Heuristic 3 Weight
-number_of_possible_moves_weight = 0.741586
+number_of_possible_moves_weight = 0.0
 # Heuristic 4 Weight
-maximizing_well_points_weight = 2.0
+well_points_weight = 2.0
 # Heuristic 5 Weight
-right_most_position_weight = 0.837682
+right_most_position_weight = 0.0
 # Heuristic 6 Weight
-minimizing_well_points_weight = 1.131874
+minimizing_well_points_weight = 0.0
 
 
 def log(some_object):
