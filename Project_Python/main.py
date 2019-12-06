@@ -35,6 +35,8 @@ try:
         elif args[0] == 'CHANGE':
             if args[1] == 'SWAP':
                 agent.my_position, agent.opp_position = agent.opp_position, agent.my_position
+                move = agent.make_move(agent.my_position)
+                print('MOVE;{}'.format(move))
             else:
                 board.update(args[2])
                 if args[3] == 'YOU':

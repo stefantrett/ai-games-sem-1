@@ -75,8 +75,10 @@ class Board:
         if new_board.state[index] == 1:  # if last cell was 0 before increment (incremented to 1)
             if owned_hole(side, index):  # hole I ended up on is owned by me
                 # take all pebbles on opposite side
-                new_board.increment_well(side, new_board.state[14 - index])
                 new_board.state[14 - index] = 0
+                # move the capturing pebble as well
+                new_board.state[index] = 0
+                new_board.increment_well(side, new_board.state[14 - index] + 1)
 
         if index == my_well(side):
             ended_in_own_well = True

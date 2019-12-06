@@ -69,6 +69,7 @@ class Tortellini:
                     child, ended_in_own_well = simulation_board.generate_move(side, i)
 
                     # One more turn if it ended in it's own well
+                    # TODO: add if first turn
                     if ended_in_own_well:
                         evaluation, _ = self.min_max_alg(child, depth - 1, alpha, beta, True, side)
                     else:
@@ -93,6 +94,7 @@ class Tortellini:
                     child, ended_in_own_well = simulation_board.generate_move(side, i)
 
                     # One more turn if it ended in it's own well
+                    # TODO: add if first turn
                     if ended_in_own_well:
                         evaluation, _ = self.min_max_alg(child, depth - 1, alpha, beta, False, side)
                     else:
