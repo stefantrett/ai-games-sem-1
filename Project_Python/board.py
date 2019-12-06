@@ -37,8 +37,11 @@ class Board:
         # self.south = [0, 7, 7, 7, 7, 7, 7, 7] home south – holes south
 
         # this is how it's kept in memory
-        self.state = [7, 7, 7, 7, 7, 7, 7, 0, 7, 7, 7, 7, 7, 7, 7, 0]
         # holes north - home north - holes south - home south
+        self.state = [7, 7, 7, 7, 7, 7, 7, 0, 7, 7, 7, 7, 7, 7, 7, 0]
+
+        # Last position move for each side
+        self.last_position_moved = None
 
     def __eq__(self, other):
         # Overrides the default implementation
@@ -78,18 +81,54 @@ class Board:
         if index == my_well(side):
             ended_in_own_well = True
 
+        new_board.last_position_moved = move
+
         return new_board, ended_in_own_well
 
-    def get_evaluation(self):
-        pits_score_north, pits_score_south = self.get_pits_score_for_sides()
-        return (self.get_well_score(NORTH_SIDE) - self.get_well_score(SOUTH_SIDE)) * evaluation_hyperparameter + (
-                pits_score_north - pits_score_south)
+    # TODO: pass maximizing instead of side
+    def get_evaluation(self, side):
+        # Heuristic 1
 
-    def get_well_score(self, side):
-        return self.state[my_well(side)]
+        # Heuristic 2
+        if side == NORTH_SIDE:
+            pits_score = sum(self.state[0:7])
+        else:
+            pits_score = (-1) * sum(self.state[8:15])
+
+        # Heuristic 3
+        if side == NORTH_SIDE:
+            number_of_possible_moves = sum(cell > 0 for cell in self.state[0:7])
+        else:
+            number_of_possible_moves = (-1) * sum(cell > 0 for cell in self.state[8:15])
+
+        # Heuristic 4
+        maximizing_well_points = self.get_well_score(NORTH_SIDE)
+
+        # Heuristic 5
+        if side == NORTH_SIDE and self.last_position_moved == 1:
+            right_most_position = 1
+        elif side == SOUTH_SIDE and self.last_position_moved == 1:
+            right_most_position = -1
+        else:
+            right_most_position = 0
+
+        # Heuristic 6
+        minimizing_well_points = self.get_well_score(SOUTH_SIDE)
+        
+        return (pits_score * pits_score_weight) + (
+                number_of_possible_moves * number_of_possible_moves_weight) + (
+                maximizing_well_points * maximizing_well_points_weight) + (
+                right_most_position * right_most_position_weight) - (
+                minimizing_well_points * minimizing_well_points_weight)
 
     def get_pits_score_for_sides(self):
         return sum(self.state[0:7]), sum(self.state[8:15])
+
+    def get_number_of_possible_moves_for_sides(self):
+        return sum(cell > 0 for cell in self.state[0:7]), sum(cell > 0 for cell in self.state[8:15])
+
+    def get_well_score(self, side):
+        return self.state[my_well(side)]
 
     def increment_well(self, side, pebbles_no):
         self.state[my_well(side)] += pebbles_no
