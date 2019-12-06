@@ -9,7 +9,7 @@ DEPTH = 10
 log_file = open("log.txt", "w")
 
 # Heuristic 1 Weight
-left_most_pit_score_weight = 0.0
+left_most_pit_score_weight = 0.70
 # Heuristic 2 Weight
 pits_score_weight = 0.85
 # Heuristic 3 Weight
