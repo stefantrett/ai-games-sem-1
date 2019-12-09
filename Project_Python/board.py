@@ -88,7 +88,7 @@ class Board:
 
         return new_board, ended_in_own_well
 
-    def get_evaluation_backup(self, maximizing_player):
+    def get_evaluation(self, maximizing_player):
         # Heuristic 1
         left_most_pit_score = self.state[0] - self.state[8]
 
@@ -116,7 +116,7 @@ class Board:
                        well_points * well_points_weight) + (
                        right_most_position * right_most_position_weight)
 
-    def get_evaluation(self, side):
+    def get_evaluation_backup(self, side):
         evaluation = 0.0
 
         stones_in_north_well = self.get_well_score(NORTH_SIDE)
@@ -146,13 +146,20 @@ class Board:
             if 7 - i + 1 == self.get_cell_score(side, i):
                 evaluation += 1.0
 
-        own_pits_score = 0.0
-        for i in range(1, 8):
-            own_pits_score += self.get_cell_score(side, i)
+        # own_pits_score = 0.0
+        # for i in range(1, 8):
+        #     own_pits_score += self.get_cell_score(side, i)
+        #
+        # opp_pits_score = 0.0
+        # for i in range(1, 8):
+        #     opp_pits_score += self.get_cell_score(opposite_side(side), i)
 
-        opp_pits_score = 0.0
-        for i in range(1, 8):
-            opp_pits_score += self.get_cell_score(opposite_side(side), i)
+        if side == NORTH_SIDE:
+            own_pits_score = sum(self.state[0:7])
+            opp_pits_score = sum(self.state[8:15])
+        else:
+            opp_pits_score = sum(self.state[0:7])
+            own_pits_score = sum(self.state[8:15])
 
         pits_score_eval = (own_pits_score - opp_pits_score) / 2
         evaluation += pits_score_eval
