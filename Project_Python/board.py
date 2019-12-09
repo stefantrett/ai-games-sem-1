@@ -88,7 +88,7 @@ class Board:
 
         return new_board, ended_in_own_well
 
-    def get_evaluation(self, maximizing_player):
+    def get_evaluation_backup(self, maximizing_player):
         # Heuristic 1
         left_most_pit_score = self.state[0] - self.state[8]
 
@@ -112,9 +112,62 @@ class Board:
 
         return (left_most_pit_score * left_most_pit_score_weight) + (
                 pits_score * pits_score_weight) + (
-                number_of_possible_moves * number_of_possible_moves_weight) + (
-                well_points * well_points_weight) + (
-                right_most_position * right_most_position_weight)
+                       number_of_possible_moves * number_of_possible_moves_weight) + (
+                       well_points * well_points_weight) + (
+                       right_most_position * right_most_position_weight)
+
+    def get_evaluation(self, side):
+        evaluation = 0.0
+
+        stones_in_north_well = self.get_well_score(NORTH_SIDE)
+        stones_in_south_well = self.get_well_score(SOUTH_SIDE)
+
+        if stones_in_north_well != 0 or stones_in_south_well != 0:
+            if stones_in_north_well != stones_in_south_well:
+                if stones_in_north_well > stones_in_south_well:
+                    max_well_stones, min_well_stones = stones_in_north_well, stones_in_south_well
+                else:
+                    min_well_stones, max_well_stones = stones_in_north_well, stones_in_south_well
+
+                evaluation = (1.0 / max_well_stones * (max_well_stones - min_well_stones) + 1.0) * max_well_stones
+
+                if stones_in_north_well <= stones_in_south_well:
+                    evaluation *= -1.0
+
+        for i in range(1, 8):
+            if self.get_cell_score(side, i) == 0 and self.can_be_filled(side, i):
+                evaluation += self.get_cell_score(opposite_side(side), i) / 2
+
+        for i in range(1, 8):
+            if self.get_cell_score(opposite_side(side), i) == 0 and self.can_be_filled(opposite_side(side), i):
+                evaluation -= self.get_cell_score(side, i) / 2
+
+        for i in range(1, 8):
+            if 7 - i + 1 == self.get_cell_score(side, i):
+                evaluation += 1.0
+
+        own_pits_score = 0.0
+        for i in range(1, 8):
+            own_pits_score += self.get_cell_score(side, i)
+
+        opp_pits_score = 0.0
+        for i in range(1, 8):
+            opp_pits_score += self.get_cell_score(opposite_side(side), i)
+
+        pits_score_eval = (own_pits_score - opp_pits_score) / 2
+        evaluation += pits_score_eval
+
+        return evaluation
+
+    def can_be_filled(self, side, n):
+        can_be = False
+
+        for i in range(n-1, 0):
+            if n - i == self.get_cell_score(side, i):
+                can_be = True
+                break
+
+        return can_be
 
     def get_pits_score_for_sides(self):
         return sum(self.state[0:7]), sum(self.state[8:15])
