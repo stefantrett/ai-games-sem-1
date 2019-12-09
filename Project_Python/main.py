@@ -26,7 +26,6 @@ try:
                 agent.first_turn = False
                 agent.my_position, agent.opp_position = NORTH_SIDE, SOUTH_SIDE
                 is_SWAP_an_option = True
-                board_we_would_get_to = agent.simulate_move_for_side(agent.opp_position)
             else:
                 log("Command not valid")
 
@@ -43,13 +42,8 @@ try:
                 if args[3] == 'YOU':
                     if is_SWAP_an_option:
                         is_SWAP_an_option = False
-                        # decide if we should swap or not
-                        if board == board_we_would_get_to:
-                            agent.my_position, agent.opp_position = agent.opp_position, agent.my_position
-                            print('SWAP')
-                        else:
-                            move = agent.make_move(agent.my_position)
-                            print('MOVE;{}'.format(move))
+                        agent.my_position, agent.opp_position = agent.opp_position, agent.my_position
+                        print('SWAP')
                     else:
                         move = agent.make_move(agent.my_position)
                         print('MOVE;{}'.format(move))
