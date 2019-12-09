@@ -88,8 +88,7 @@ class Board:
 
         return new_board, ended_in_own_well
 
-    # TODO: pass maximizing instead of side
-    def get_evaluation(self, side):
+    def get_evaluation(self, maximizing_player):
         # Heuristic 1
         left_most_pit_score = self.state[0] - self.state[8]
 
@@ -97,15 +96,16 @@ class Board:
         pits_score = sum(self.state[0:7]) - sum(self.state[8:15])
 
         # Heuristic 3
-        number_of_possible_moves = sum(cell > 0 for cell in self.state[0:7]) - sum(cell > 0 for cell in self.state[8:15])
+        number_of_possible_moves = sum(cell > 0 for cell in self.state[0:7]) - sum(
+            cell > 0 for cell in self.state[8:15])
 
         # Heuristic 4
         well_points = self.get_well_score(NORTH_SIDE) - self.get_well_score(SOUTH_SIDE)
 
         # Heuristic 5
-        if side == NORTH_SIDE and self.last_position_moved == 7:
+        if maximizing_player is True and self.last_position_moved == 7:
             right_most_position = 1
-        elif side == SOUTH_SIDE and self.last_position_moved == 7:
+        elif maximizing_player is False and self.last_position_moved == 7:
             right_most_position = -1
         else:
             right_most_position = 0

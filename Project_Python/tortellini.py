@@ -53,12 +53,12 @@ class Tortellini:
     def min_max_alg(self, simulation_board, depth, alpha, beta, maximizing_player, side):
         # base case - no moves left
         if simulation_board.no_moves_left(side):
-            return simulation_board.get_evaluation(side), 0
+            return simulation_board.get_evaluation(maximizing_player), 0
 
         # reached maximum depth - heuristics - now random
         if depth == 0:
             choices = [x for x in range(1, 8) if simulation_board.cell_not_empty(side, x)]
-            return simulation_board.get_evaluation(side), random.choice(choices)
+            return simulation_board.get_evaluation(maximizing_player), random.choice(choices)
 
         # apply min max
         if maximizing_player:
