@@ -13,6 +13,7 @@ class Tortellini:
         self.board = board
         self.my_position = SOUTH_SIDE
         self.opp_position = NORTH_SIDE
+        self.first_turn = False
 
     def make_move(self, side):
         if side == NORTH_SIDE:
@@ -53,12 +54,12 @@ class Tortellini:
     def min_max_alg(self, simulation_board, depth, alpha, beta, maximizing_player, side):
         # base case - no moves left
         if simulation_board.no_moves_left(side):
-            return simulation_board.get_evaluation(), 0
+            return simulation_board.get_evaluation(maximizing_player), 0
 
         # reached maximum depth - heuristics - now random
         if depth == 0:
             choices = [x for x in range(1, 8) if simulation_board.cell_not_empty(side, x)]
-            return simulation_board.get_evaluation(), random.choice(choices)
+            return simulation_board.get_evaluation(maximizing_player), random.choice(choices)
 
         # apply min max
         if maximizing_player:
@@ -93,10 +94,14 @@ class Tortellini:
                     child, ended_in_own_well = simulation_board.generate_move(side, i)
 
                     # One more turn if it ended in it's own well
-                    if ended_in_own_well:
-                        evaluation, _ = self.min_max_alg(child, depth - 1, alpha, beta, False, side)
-                    else:
+                    if self.first_turn:
+                        self.first_turn = False
                         evaluation, _ = self.min_max_alg(child, depth - 1, alpha, beta, True, opposite_side(side))
+                    else:
+                        if ended_in_own_well:
+                            evaluation, _ = self.min_max_alg(child, depth - 1, alpha, beta, False, side)
+                        else:
+                            evaluation, _ = self.min_max_alg(child, depth - 1, alpha, beta, True, opposite_side(side))
 
                     if min_evaluation > evaluation:
                         min_i = i
