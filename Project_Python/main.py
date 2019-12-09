@@ -16,13 +16,14 @@ try:
     while not game_over:
         command = input()
         args = command.split(';')
-
         if args[0] == 'START':
             if args[1] == SOUTH:
+                agent.first_turn = True
                 agent.my_position, agent.opp_position = SOUTH_SIDE, NORTH_SIDE
                 move = agent.make_move(agent.my_position)
                 print('MOVE;{}'.format(move))
             elif args[1] == NORTH:
+                agent.first_turn = False
                 agent.my_position, agent.opp_position = NORTH_SIDE, SOUTH_SIDE
                 is_SWAP_an_option = True
                 board_we_would_get_to = agent.simulate_move_for_side(agent.opp_position)
