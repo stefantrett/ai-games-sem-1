@@ -1,6 +1,5 @@
 from copy import deepcopy
 import math
-import traceback
 from heapq import heappop, heappush
 import random
 
@@ -12,7 +11,7 @@ SOUTH = 'South'
 NORTH_SIDE = 0
 SOUTH_SIDE = 1
 
-DEPTH = 10
+DEPTH = 11
 
 log_file = open("log.txt", "w")
 
@@ -51,8 +50,8 @@ def owned_hole(my_side, hole_index):
 def get_index(side, main_move):
     if 1 <= main_move <= 7:
         return (1 - side) * (main_move - 1) + side * (main_move + 7)
-    else:
-        log("Cannot get index out of (side, move) combination")
+    # else:
+    #     log("Cannot get index out of (side, move) combination")
 
 
 class Board:
@@ -78,7 +77,7 @@ class Board:
     def update(self, board_state):
         positions = [int(x) for x in board_state.split(',')]
         self.state = positions
-        self.print_board()
+        # self.print_board()
 
     # generates a new board without changing the state of current
     # side = the side that made the move
@@ -164,7 +163,7 @@ class Board:
         return max(self.state[0:7]) == 0 if side == NORTH_SIDE else max(self.state[8:15]) == 0
 
     def print_board(self):
-        log("Board update")
+        # log("Board update")
 
         # North side
         reversed_north = self.state[0:7]
@@ -216,7 +215,7 @@ class Tortellini:
                 heappush(scores, (-1 * move_result_board.get_well_score(self.my_position), i))
         score = heappop(scores)[1]
 
-        log('MOVE;{}'.format(score))
+        # log('MOVE;{}'.format(score))
         print('MOVE;{}'.format(score))
 
     def min_max_alg(self, simulation_board, depth, alpha, beta, maximizing_player, side):
@@ -292,47 +291,41 @@ is_SWAP_an_option = False
 board_we_would_get_to = None
 
 
-# TODO: delete stacktrace log
-try:
-    while not game_over:
-        command = input()
-        args = command.split(';')
-        if args[0] == 'START':
-            if args[1] == SOUTH:
-                agent.first_turn = True
-                agent.my_position, agent.opp_position = SOUTH_SIDE, NORTH_SIDE
-                move = agent.make_move(agent.my_position)
-                print('MOVE;{}'.format(move))
-                log("MOVE :" + str(move))
-            elif args[1] == NORTH:
-                agent.first_turn = False
-                agent.my_position, agent.opp_position = NORTH_SIDE, SOUTH_SIDE
-                is_SWAP_an_option = True
-            else:
-                log("Command not valid")
+while not game_over:
+    command = input()
+    args = command.split(';')
+    if args[0] == 'START':
+        if args[1] == SOUTH:
+            agent.first_turn = True
+            agent.my_position, agent.opp_position = SOUTH_SIDE, NORTH_SIDE
+            move = agent.make_move(agent.my_position)
+            print('MOVE;{}'.format(move))
+            # log("MOVE :" + str(move))
+        elif args[1] == NORTH:
+            agent.first_turn = False
+            agent.my_position, agent.opp_position = NORTH_SIDE, SOUTH_SIDE
+            is_SWAP_an_option = True
+        # else:
+        #     log("Command not valid")
 
-        elif args[0] == 'END':
-            game_over = True
+    elif args[0] == 'END':
+        game_over = True
 
-        elif args[0] == 'CHANGE':
-            if args[1] == 'SWAP':
-                agent.my_position, agent.opp_position = agent.opp_position, agent.my_position
-                move = agent.make_move(agent.my_position)
-                print('MOVE;{}'.format(move))
-                log("MOVE :" + str(move))
+    elif args[0] == 'CHANGE':
+        if args[1] == 'SWAP':
+            agent.my_position, agent.opp_position = agent.opp_position, agent.my_position
+            move = agent.make_move(agent.my_position)
+            print('MOVE;{}'.format(move))
+            # log("MOVE :" + str(move))
 
-            else:
-                board.update(args[2])
-                if args[3] == 'YOU':
-                    if is_SWAP_an_option:
-                        is_SWAP_an_option = False
-                        agent.my_position, agent.opp_position = agent.opp_position, agent.my_position
-                        print('SWAP')
-                    else:
-                        move = agent.make_move(agent.my_position)
-                        print('MOVE;{}'.format(move))
-                        log("MOVE :" + str(move))
-
-except Exception as e:
-    log(traceback.extract_tb(e.__traceback__))
-    log(e)
+        else:
+            board.update(args[2])
+            if args[3] == 'YOU':
+                if is_SWAP_an_option:
+                    is_SWAP_an_option = False
+                    agent.my_position, agent.opp_position = agent.opp_position, agent.my_position
+                    print('SWAP')
+                else:
+                    move = agent.make_move(agent.my_position)
+                    print('MOVE;{}'.format(move))
+                    # log("MOVE :" + str(move))
